@@ -26,5 +26,3 @@ COPY bronze.raw_pgcb(
     gas, liquid_fuel, coal, hydro, solar, wind,
     india_bheramara_hvdc, india_tripura, india_adani, nepal, remarks
 ) FROM '/data/raw_pgcb.csv' WITH (FORMAT csv, HEADER true, NULL 'NULL');
-
-COMMENT ON TABLE bronze.raw_pgcb IS 'Raw PGCB power grid data -- ingested verbatim from xlsx';

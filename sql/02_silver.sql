@@ -46,5 +46,3 @@ SELECT
 FROM bronze.raw_pgcb b;
 
 CREATE INDEX idx_silver_datetime ON silver.pgcb_cleaned (datetime);
-
-COMMENT ON TABLE silver.pgcb_cleaned IS 'Cleaned PGCB data — nan strings cast to NULL, proper types, sorted';
