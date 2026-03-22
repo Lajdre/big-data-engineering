@@ -4,7 +4,7 @@ default:
 up:
     docker compose up -d
     @echo "Waiting for PostgreSQL to be ready..."
-    @timeout 60 sh -c 'until docker compose exec postgres pg_isready -U pgcb -d pgcb > /dev/null 2>&1; do sleep 1; done' && echo "PostgreSQL is ready."
+    @while ! podman-compose exec -T postgres pg_isready -U pgcb -d pgcb >/dev/null 2>&1; do sleep 1; done && echo "PostgreSQL is ready."
 
 down:
     docker compose down
@@ -22,8 +22,6 @@ gold:
     docker compose exec -T postgres psql -U pgcb -d pgcb -f /sql/03_gold.sql
 
 pipeline: up
-    @echo "Waiting for PostgreSQL to be ready..."
-    @timeout 60 sh -c 'until docker compose exec postgres pg_isready -U pgcb -d pgcb > /dev/null 2>&1; do sleep 1; done' && echo "Ready."
     just ingest-bronze
     just silver
     just gold
