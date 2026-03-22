@@ -7,6 +7,7 @@ Ingests Bangladesh's national grid telemetry (hourly generation, demand, and loa
 - [Docker](https://docs.docker.com/get-docker/) / [Podman](https://podman.io/getting-started/installation) with `docker compose` available
 - Python 3.13 with `uv` (`nix develop` or activate the `.venv`)
 - `data/PGCB_date_power_demand.xlsx` placed in the `data/` directory
+  - https://doi.org/10.24432/C59P6V
 
 ## Quick Start
 
@@ -41,16 +42,8 @@ bronze.raw_pgcb           <- raw, as-loaded from xlsx (all TEXT)
     gold.daily_vs_monthly           <- daily x monthly JOIN (anomaly context)
 ```
 
-## Architecture Notes
-
-- **Bronze:** `scripts/load.py` reads the xlsx and writes `data/raw_pgcb.csv`. The SQL `COPY` command ingests it into `bronze.raw_pgcb` with all columns as `TEXT`.
-- **Silver:** SQL transforms apply `NULLIF(col, 'nan')` and cast to proper types.
-- **Gold:** SQL aggregations produce daily and monthly summaries. `gold.daily_vs_monthly` is built via a JOIN between the daily and monthly tables.
-
 ## Stopping
 
 ```bash
 just down
 ```
-
-Data persists in a named Docker volume — run `just up` again to resume.
