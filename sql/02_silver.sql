@@ -1,5 +1,4 @@
 -- Silver layer: cleaned and type-corrected version of bronze data
--- 'nan' strings are cast to NULL; numeric columns use REAL/DOUBLE PRECISION
 
 DROP SCHEMA IF EXISTS silver CASCADE;
 CREATE SCHEMA silver;
@@ -30,20 +29,20 @@ INSERT INTO silver.pgcb_cleaned (
 )
 SELECT
     CASE WHEN b.datetime ~ '^\d{4}-\d{2}-\d{2}' THEN b.datetime::timestamp ELSE NULL END,
-    NULLIF(b.generation_mw,     'nan')::double precision,
-    NULLIF(b.demand_mw,         'nan')::double precision,
-    NULLIF(b.load_shedding,     'nan')::double precision,
-    NULLIF(b.gas,               'nan')::double precision,
-    NULLIF(b.liquid_fuel,       'nan')::double precision,
-    NULLIF(b.coal,              'nan')::double precision,
-    NULLIF(b.hydro,             'nan')::double precision,
-    NULLIF(b.solar,             'nan')::double precision,
-    NULLIF(b.wind,              'nan')::double precision,
-    NULLIF(b.india_bheramara_hvdc, 'nan')::double precision,
-    NULLIF(b.india_tripura,     'nan')::double precision,
-    NULLIF(b.india_adani,       'nan')::double precision,
-    NULLIF(b.nepal,             'nan')::double precision,
-    NULLIF(b.remarks,           'nan')::text
+    NULLIF(b.generation_mw,        'nan')::double precision,
+    NULLIF(b.demand_mw,            'nan')::integer,
+    NULLIF(b.load_shedding,        'nan')::integer,
+    NULLIF(b.gas,                  'nan')::integer,
+    NULLIF(b.liquid_fuel,          'nan')::integer,
+    NULLIF(b.coal,                 'nan')::integer,
+    NULLIF(b.hydro,                'nan')::integer,
+    NULLIF(b.solar,                'nan')::double precision,
+    NULLIF(b.wind,                 'nan')::double precision,
+    NULLIF(b.india_bheramara_hvdc, 'nan')::integer,
+    NULLIF(b.india_tripura,        'nan')::integer,
+    NULLIF(b.india_adani,          'nan')::double precision,
+    NULLIF(b.nepal,                'nan')::double precision,
+    NULLIF(b.remarks,              'nan')::text
 FROM bronze.raw_pgcb b;
 
 CREATE INDEX idx_silver_datetime ON silver.pgcb_cleaned (datetime);
