@@ -29,5 +29,15 @@ pipeline: up
     @echo "Pipeline complete. Row counts:"
     docker compose exec -T postgres psql -U pgcb -d pgcb -c "SELECT 'bronze.raw_pgcb' AS tbl, COUNT(*) AS n FROM bronze.raw_pgcb UNION ALL SELECT 'silver.pgcb_cleaned', COUNT(*) FROM silver.pgcb_cleaned UNION ALL SELECT 'gold.daily_generation_mix', COUNT(*) FROM gold.daily_generation_mix UNION ALL SELECT 'gold.monthly_demand_summary', COUNT(*) FROM gold.monthly_demand_summary;"
 
-repl:
+clean-db:
+    docker compose exec -T postgres psql -U pgcb -d pgcb -c "TRUNCATE TABLE bronze.raw_pgcb, silver.pgcb_cleaned, gold.daily_generation_mix, gold.monthly_demand_summary, gold.daily_vs_monthly;"
+    @echo "All tables truncated. Schemas and structures preserved."
+
+spark-pipeline:
+    uv run python -m pipeline.main
+
+inspect-tbl:
+    docker compose exec -T postgres psql -U pgcb -d pgcb -c "SELECT 'bronze.raw_pgcb' AS tbl, COUNT(*) AS n FROM bronze.raw_pgcb UNION ALL SELECT 'silver.pgcb_cleaned', COUNT(*) FROM silver.pgcb_cleaned UNION ALL SELECT 'gold.daily_generation_mix', COUNT(*) FROM gold.daily_generation_mix UNION ALL SELECT 'gold.monthly_demand_summary', COUNT(*) FROM gold.monthly_demand_summary UNION ALL SELECT 'gold.daily_vs_monthly', COUNT(*) FROM gold.daily_vs_monthly;"
+
+postgres-repl:
     docker compose exec postgres psql -U pgcb -d pgcb
