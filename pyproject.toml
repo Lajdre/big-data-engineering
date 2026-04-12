@@ -6,4 +6,6 @@ dependencies = [
     "psycopg2-binary",
     "pandas",
     "openpyxl",
+    "pyspark>=4.1.1",
+    "prefect>=3.6.26",
 ]

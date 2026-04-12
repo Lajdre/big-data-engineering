@@ -20,6 +20,7 @@
             packages = [
               pkgs.python313
               pkgs.uv
+              pkgs.openjdk21
             ];
 
             env = lib.optionalAttrs pkgs.stdenv.isLinux {
