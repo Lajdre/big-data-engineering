@@ -11,12 +11,22 @@ Ingests Bangladesh's national grid telemetry (hourly generation, demand, and loa
 
 ## Quick Start
 
+### Spark pipeline
 ```bash
-# 1. Start PostgreSQL
-just up
+just load-csv # Prepare the CSV from the xlsx file
+just up # Start Postgres
+just spark-pipeline # Run the pipeline
+jsut inspect-tbl # Inspect the row counts of the tables
+just down # Stop Postgres
+```
 
-# 2. Run the full ELT pipeline (load xlsx -> bronze -> silver -> gold)
-just pipeline
+### Pure SQL
+```bash
+just load-csv # Prepare the CSV from the xlsx file
+just up # Start Postgres
+just pipeline # Run the pipeline
+jsut inspect-tbl # Inspect the row counts of the tables
+just down # Stop Postgres
 ```
 
 ## Just Recipes
