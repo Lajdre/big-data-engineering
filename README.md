@@ -2,6 +2,8 @@
 
 Ingests Bangladesh's national grid telemetry (hourly generation, demand, and load-shedding data from the Power Grid Company of Bangladesh) into PostgreSQL via a bronze -> silver -> gold medallion architecture.
 
+![](./assets/pipeline_architecture_diagram.png)
+
 ## Prerequisites
 
 - [Docker](https://docs.docker.com/get-docker/) / [Podman](https://podman.io/getting-started/installation) with `docker compose` available
