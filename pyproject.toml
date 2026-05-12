@@ -8,4 +8,15 @@ dependencies = [
     "openpyxl",
     "pyspark>=4.1.1",
     "prefect>=3.6.26",
+    "watchdog>=6.0.0",
+    "kafka-python>=2.3.1",
 ]
+
+[tool.basedpyright]
+reportUnusedVariable = "hint"
+reportUnusedCallResult = false
+reportAny = false
+reportExplicitAny = false
+reportUnknownMemberType = false
+reportMissingTypeStubs = false
+reportUnknownLambdaType = false
