@@ -6,17 +6,31 @@ Ingests Bangladesh's national grid telemetry (hourly generation, demand, and loa
 
 ## Prerequisites
 
-- [Docker](https://docs.docker.com/get-docker/) / [Podman](https://podman.io/getting-started/installation) with `docker compose` available
-- Python 3.13 with `uv` (`nix develop` or activate the `.venv`)
-- `data/PGCB_date_power_demand.xlsx` placed in the `data/` directory
+- `PGCB_date_power_demand.xlsx` placed in the `data/` directory
   - https://doi.org/10.24432/C59P6V
+- [Docker](https://docs.docker.com/get-docker/) / [Podman](https://podman.io/getting-started/installation) with `docker compose` available
+- uv or nix to create python environment
 
 ## Quick Start
+
+### Automatic Pipeline (Producer & Consumer)
+```bash
+just load-csv # Prepare the CSV from the xlsx file, if needed
+just split-data # Split data to simulate batches of incoming data
+just up # Start PostgreSQL and Kafka
+just db-init # Create schemas, if running for the first time
+just producer # Run the producer
+just consumer # Run the consumer
+# Move a csv file into data/incoming
+# Watch it be transformed by the consumer and moved to data/processed
+just inspect-tbl # Inspect the tables once the pipeline finishes
+```
 
 ### Spark pipeline
 ```bash
 just load-csv # Prepare the CSV from the xlsx file
 just up # Start Postgres
+just db-init # If running for the first time to create schemas
 just spark-pipeline # Run the pipeline
 jsut inspect-tbl # Inspect the row counts of the tables
 just down # Stop Postgres
@@ -26,6 +40,7 @@ just down # Stop Postgres
 ```bash
 just load-csv # Prepare the CSV from the xlsx file
 just up # Start Postgres
+just db-init # If running for the first time to create schemas
 just pipeline # Run the pipeline
 jsut inspect-tbl # Inspect the row counts of the tables
 just down # Stop Postgres
