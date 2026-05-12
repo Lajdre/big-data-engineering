@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from prefect import flow, task
 from pyspark.sql import SparkSession
 
@@ -50,6 +52,13 @@ def pgcb_pipeline(csv_path: str | None = None) -> None:
   bronze_task(csv_path)
   silver_task()
   gold_task()
+
+
+def run_file(filepath: str) -> None:
+  """Run the full pipeline for a single file (used by Kafka consumer)."""
+  print(f"Processing: {Path(filepath).name}")
+  pgcb_pipeline(filepath)
+  print(f"Completed: {Path(filepath).name}")
 
 
 if __name__ == "__main__":

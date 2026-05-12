@@ -4,12 +4,7 @@ from pipeline import config
 
 
 def load_bronze(spark: SparkSession, csv_path: str | None = None) -> DataFrame:
-  """
-  Ingest raw CSV into the bronze schema via JDBC append + dedup.
-
-  Reads the CSV, deduplicates on datetime, and appends to
-  bronze. Idempotent if loding the same CSV.
-  """
+  """Ingest raw CSV into the bronze schema via JDBC append."""
   path = csv_path or str(config.CSV_PATH)
 
   df = spark.read.csv(path, header=True, inferSchema=False)
@@ -23,7 +18,7 @@ def load_bronze(spark: SparkSession, csv_path: str | None = None) -> DataFrame:
     .option("driver", config.POSTGRES_DRIVER) \
     .option("user", config.JDBC_USER) \
     .option("password", config.JDBC_PASS) \
-    .mode("overwrite") \
+    .mode("append") \
     .save()
   # fmt: on
 

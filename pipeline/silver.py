@@ -29,7 +29,7 @@ def _nullify_nan(col_name: str) -> Column:
 
 def transform_silver(spark: SparkSession) -> DataFrame:
   """
-  Read bronze, apply cleaning, and write to silver (overwrite).
+  Read bronze data, clean it, de-duplicate, and overwrite silver.
 
   Cleaning:
     - Cast datetime to timestamp
@@ -54,6 +54,8 @@ def transform_silver(spark: SparkSession) -> DataFrame:
       df = df.withColumn(col, _nullify_nan(col).cast("double"))
 
   df = df.dropna(subset=["datetime"])
+
+  df = df.dropDuplicates(subset=["datetime"])
 
   # fmt: off
   df.write.format("jdbc") \
