@@ -2,7 +2,7 @@
 
 Ingests Bangladesh's national grid telemetry (hourly generation, demand, and load-shedding data from the Power Grid Company of Bangladesh) into PostgreSQL via a bronze -> silver -> gold medallion architecture.
 
-![](./assets/pipeline_architecture_diagram.png)
+![](./assets/architecture_diagram.png)
 
 ## Prerequisites
 
